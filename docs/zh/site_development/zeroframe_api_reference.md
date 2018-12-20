@@ -17,24 +17,24 @@ Display a notification with confirm button
 | 参数                      | 定义                                            |
 |---------------------------|-------------------------------------------------|
 | **message**               | The message you want to display                 |
-| **button_caption** (可选) | Caption of the confirmation button (默认值: OK) |
+| **button_caption** (可选) | Caption of the confirmation button (默认值: OK) | OK) 
 
 **返回值** True if clicked on button
 
-**例子:**
-```coffeescript
-# Delete site
-siteDelete: (address) ->
-	site = @sites[address]
-	title = site.content.title
-	if title.length > 40
-		title = title.substring(0, 15)+"..."+title.substring(title.length-10)
-	@cmd "wrapperConfirm", ["Are you sure you sure? <b>#{title}</b>", "Delete"], (confirmed) =>
-		@log "Deleting #{site.address}...", confirmed
-		if confirmed
-			$(".site-#{site.address}").addClass("deleted")
-			@cmd "siteDelete", {"address": address}
-```
+??? 例子
+    ```coffeescript tab= 
+    # Delete site
+    siteDelete: (address) ->
+      site = @sites[address]
+      title = site.content.title
+      if title.length > 40
+        title = title.substring(0, 15)+"..."+title.substring(title.length-10)
+      @cmd "wrapperConfirm", ["Are you sure you sure? <b>#{title}</b>", "Delete"], (confirmed) =>
+        @log "Deleting #{site.address}...", confirmed
+        if confirmed
+          $(".site-#{site.address}").addClass("deleted")
+          @cmd "siteDelete", {"address": address}
+    ```
 
 
 ---
@@ -51,12 +51,7 @@ Applies the windows.location.hash to page url. Call when you page is fully loade
 ### wrapperGetLocalStorage
 **返回值** Browser's local store for the site
 
-**例子:**
-```coffeescript
-@cmd "wrapperGetLocalStorage", [], (res) =>
-	res ?= {}
-	@log "Local storage value:", res
-```
+
 
 
 
@@ -70,15 +65,15 @@ Applies the windows.location.hash to page url. Call when you page is fully loade
 ### wrapperGetAjaxKey
 **返回值** The key you need to initilize ajax requests
 
-**例子:**
-```javascript
-ajax_key = await page.cmdp("wrapperGetAjaxKey")
-req = new window.XMLHttpRequest()
-req.open("GET", "content.json?ajax_key=" + ajax_key)
-req.setRequestHeader("Range", "bytes=10-200")  // Optional: only if you want request partial file
-req.send()
-console.log(req.response)
-```
+??? 例子
+    ```javascript tab=
+    ajax_key = await page.cmdp("wrapperGetAjaxKey")
+    req = new window.XMLHttpRequest()
+    req.open("GET", "content.json?ajax_key=" + ajax_key)
+    req.setRequestHeader("Range", "bytes=10-200")  // Optional: only if you want request partial file
+    req.send()
+    console.log(req.response)
+    ```
 
 ---
 
@@ -93,10 +88,7 @@ Display a notification
 
 **返回值** None
 
-**例子:**
-```coffeescript
-@cmd "wrapperNotification", ["done", "Your registration has been sent!", 10000]
-```
+
 
 
 ---
@@ -111,10 +103,7 @@ Navigates or opens a new popup window.
 | **target** (可选) | Target window name                                                                                           |
 | **specs** (可选)  | Special properties of the window (see: [window.open specs](http://www.w3schools.com/jsref/met_win_open.asp)) |
 
-**例子:**
-```coffeescript
-@cmd "wrapperOpenWindow", ["https://zeronet.io", "_blank", "width=550,height=600,location=no,menubar=no"]
-```
+
 
 ---
 
@@ -142,16 +131,7 @@ Prompt text input from user
 
 **返回值** Text entered to input
 
-**例子:**
-```coffeescript
-# Prompt the private key
-@cmd "wrapperPrompt", ["Enter your private key:", "password"], (privatekey) =>
-    $(".publishbar .button").addClass("loading")
-    # Send sign content.json and publish request to server
-    @cmd "sitePublish", [privatekey], (res) =>
-        $(".publishbar .button").removeClass("loading")
-        @log "Publish result:", res
-```
+
 
 
 ---
@@ -167,10 +147,7 @@ Change the url and adds new entry to browser's history. See: [pushState JS metho
 
 **返回值** None
 
-**例子:**
-```coffeescript
-@cmd "wrapperPushState", [{"scrollY": 100}, "Profile page", "Profile"]
-```
+
 
 
 ---
@@ -186,7 +163,7 @@ Change the url without adding new entry to browser's history. See: [replaceState
 
 **返回值** None
 
-```coffeescript
+```coffeescript tab=
 @cmd "wrapperReplaceState", [{"scrollY": 100}, "Profile page", "Profile"]
 ```
 
@@ -195,12 +172,10 @@ Change the url without adding new entry to browser's history. See: [replaceState
 ### wrapperRequestFullscreen
 Set the current page to fullscreen. (request permission for the site on first call)
 
-> **Note:** Starting from ZeroNet Rev3136 you can use the fullscreen javascript API directly, without fullscreen request
+!!! note
+    Starting from ZeroNet Rev3136 you can use the fullscreen javascript API directly, without fullscreen request
 
-**例子:**
-```javascript
-page.cmd("wrapperRequestFullscreen")
-```
+
 
 
 ---
@@ -214,11 +189,7 @@ Set browser's local store data stored for the site
 
 **返回值** None
 
-**例子:**
-```coffeescript
-Page.local_storage["topic.#{@topic_id}_#{@topic_user_id}.visited"] = Time.timestamp()
-Page.cmd "wrapperSetLocalStorage", Page.local_storage
-```
+
 
 
 ---
@@ -232,10 +203,7 @@ Set browser's title
 
 **返回值** None
 
-**例子:**
-```coffeescript
-Page.cmd "wrapperSetTitle", "newtitle"
-```
+
 
 ---
 
@@ -251,11 +219,7 @@ Set sites's viewport meta tag content (required for mobile sites)
 
 **返回值** None
 
-**例子:**
-```coffeescript
-# Prompt the private key
-@cmd "wrapperSetViewport", "width=device-width, initial-scale=1.0"
-```
+
 
 
 ---
@@ -301,15 +265,9 @@ Add a new certificate to current user.
 | **auth_user_name** | User name used on registration                                                                |
 | **cert**           | The cert itself: `auth_address#auth_type/auth_user_name` string signed by the cert site owner |
 
-**返回值** "ok", "Not changed" or {"error": error_message}
+**返回值** "$1", "Not changed" or {"error": error_message}
 
-**例子:**
-```coffeescript
-@cmd "certAdd", ["zeroid.bit", auth_type, user_name, cert_sign], (res) =>
-	$(".ui").removeClass("flipped")
-	if res.error
-		@cmd "wrapperNotification", ["error", "#{res.error}"]
-```
+
 
 
 ---
@@ -326,10 +284,7 @@ Display certificate selector.
 
 **返回值** None
 
-**例子:**
-```coffeescript
-@cmd "certSelect", {"accepted_domains": ["zeroid.bit"], "accepted_pattern": "1ZeroiD[0-9]"}
-```
+
 
 
 ---
@@ -349,19 +304,19 @@ Request notifications about sites's events.
 
  - **siteChanged** (joined by default)<br>Events: peers_added, file_started, file_done, file_failed
 
-**例子**:
-```coffeescript
-# Wrapper websocket connection ready
-onOpenWebsocket: (e) =>
-	@cmd "channelJoinAllsite", {"channel": "siteChanged"}
+??? 例子
+    ```coffeescript tab=
+    # Wrapper websocket connection ready
+    onOpenWebsocket: (e) =>
+      @cmd "channelJoinAllsite", {"channel": "siteChanged"}
 
-# Route incoming requests and messages
-route: (cmd, data) ->
-	if cmd == "setSiteInfo"
-		@log "Site changed", data
-	else
-		@log "Unknown command", cmd, data
-```
+    # Route incoming requests and messages
+    route: (cmd, data) ->
+      if cmd == "setSiteInfo"
+        @log "Site changed", data
+      else
+        @log "Unknown command", cmd, data
+    ```
 
 **Example event data**
 ```json
@@ -391,13 +346,7 @@ Run a query on the sql cache
 **返回值** <list> Result of the query
 
 
-**例子:**
-```javascript
-Page.cmd("dbQuery", [
-   "SELECT * FROM json WHERE file_name = :file_name",
-   {file_name: "data.json"}
-], (res) => { console.log(res.length) })
-```
+
 
 ```javascript
 Page.cmd("dbQuery", [
@@ -414,7 +363,7 @@ Page.cmd("dbQuery", [
 ```
 
 
-```coffeescript
+```coffeescript tab=
 @log "Updating user info...", @my_address
 Page.cmd "dbQuery", ["SELECT user.*, json.json_id AS data_json_id FROM user LEFT JOIN json USING(path) WHERE path='#{@my_address}/data.json'"], (res) =>
 	if res.error or res.length == 0 # Db not ready yet or No user found
@@ -453,7 +402,7 @@ Delete a file
 |----------------|-----------------------------|
 | **inner_path** | The file you want to delete |
 
-**返回值** "ok" on success else the error message
+**返回值** "$1" on success else the error message
 
 
 ---
@@ -472,38 +421,7 @@ Get file content
 **返回值** <string> The content of the file
 
 
-**例子:**
-```coffeescript
-# Upvote a topic on ZeroTalk
-submitTopicVote: (e) =>
-	if not Users.my_name # Not registered
-		Page.cmd "wrapperNotification", ["info", "Please, request access before posting."]
-		return false
 
-	elem = $(e.currentTarget)
-	elem.toggleClass("active").addClass("loading")
-	inner_path = "data/users/#{Users.my_address}/data.json"
-
-	Page.cmd "fileGet", [inner_path], (data) =>
-		data = JSON.parse(data)
-		data.topic_votes ?= {} # Create if not exits
-		topic_address = elem.parents(".topic").data("topic_address")
-
-		if elem.hasClass("active") # Add upvote to topic
-			data.topic_votes[topic_address] = 1
-		else # Remove upvote from topic
-			delete data.topic_votes[topic_address]
-
-		# Write file and publish to other peers
-		Page.writePublish inner_path, Page.jsonEncode(data), (res) =>
-			elem.removeClass("loading")
-			if res == true
-				@log "File written"
-			else # Failed
-				elem.toggleClass("active") # Change back
-
-	return false
-```
 
 
 ---
@@ -530,7 +448,7 @@ Initialize download of a (可选) file.
 | **inner_path**     | The file you want to get                       |
 | **timeout** (可选) | Maximum wait time to data arrive (默认值: 300) |
 
-**返回值** "ok" on successfull download
+**返回值** "$1" on successfull download
 
 
 ---
@@ -552,14 +470,7 @@ Simple json file query command
  - `["data/users/*/data.json", ""]`: Returns all data from users files
  - `["data/users/*/data.json"]`: Returns all data from users files (same as above)
 
-**例子:**
-```coffeescript
-@cmd "fileQuery", ["data/users/*/data.json", "topics"], (topics) =>
-	topics.sort (a, b) -> # Sort by date
-		return a.added - b.added
-	for topic in topics
-		@log topic.topic_id, topic.inner_path, topic.title
-```
+
 
 
 ---
@@ -587,11 +498,7 @@ Return the rules for the file.
 }
 ```
 
-**例子:**
-```coffeescript
-@cmd "fileRules", "data/users/1J3rJ8ecnwH2EPYa6MrgZttBNc61ACFiCj/content.json", (rules) =>
-	@log rules
-```
+
 
 
 ---
@@ -607,23 +514,12 @@ Write file content
 | **inner_path**     | Inner path of the file you want to write           |
 | **content_base64** | Content you want to write to file (base64 encoded) |
 
-**返回值** "ok" on success else the error message
+**返回值** 若成功则返回`"ok"` else the error message
 
-**例子:**
-```coffeescript
-writeData: (cb=null) ->
-	# Encode to json, encode utf8
-	json_raw = unescape(encodeURIComponent(JSON.stringify({"hello": "ZeroNet"}, undefined, '\t')))
-	# Convert to to base64 and send
-	@cmd "fileWrite", ["data.json", btoa(json_raw)], (res) =>
-		if res == "ok"
-			if cb then cb(true)
-		else
-			@cmd "wrapperNotification", ["error", "File write error: #{res}"]
-			if cb then cb(false)
-```
 
-_Note:_ to write files that not in content.json yet, you must have `"own": true` in `data/sites.json` at the site you want to write
+
+!!! note
+    To write files that not in content.json yet, you must have `"own": true` in `data/sites.json` at the site you want to write
 
 
 ---
@@ -642,11 +538,7 @@ Test UiServer websocket connection
 
 **Return:** <dict> All information about the server
 
-**例子:**
-```coffeescript
-@cmd "serverInfo", {}, (server_info) =>
-	@log "Server info:", server_info
-```
+
 
 **返回值举例:**
 ```json
@@ -672,11 +564,7 @@ Test UiServer websocket connection
 
 **返回值** <dict> All information about the site
 
-**例子:**
-```coffeescript
-@cmd "siteInfo", {}, (site_info) =>
-	@log "Site info:", site_info
-```
+
 
 **返回值举例:**
 ```json
@@ -730,18 +618,9 @@ Test UiServer websocket connection
 | **inner_path** (可选) | 欲发布的content json的内部路径 (默认值: content.json)   |
 | **sign** (可选)       | 若值为True则会在发布前给content.json签名 (默认值: True) |
 
-**返回值** "ok" on success else the error message
+**返回值** 若成功则返回`"ok"` else the error message
 
-**例子:**
-```coffeescript
-# Prompt the private key
-@cmd "wrapperPrompt", ["Enter your private key:", "password"], (privatekey) =>
-	$(".publishbar .button").addClass("loading")
-	# Send sign content.json and publish request to server
-	@cmd "sitePublish", [privatekey], (res) =>
-		$(".publishbar .button").removeClass("loading")
-		@log "Publish result:", res
-```
+
 
 
 ---
@@ -750,7 +629,7 @@ Test UiServer websocket connection
 ### siteReload
 Reload content.json file content and scans for optional files
 
-**返回值** "ok" on success
+**返回值** 若成功则返回`"ok"`
 
 
 ---
@@ -766,17 +645,12 @@ Reload content.json file content and scans for optional files
 | **inner_path** (可选)              | 欲签名的content json文件的内部路径 (默认值: content.json)              |
 | **remove_missing_optional** (可选) | 移除在content.json文件内，但实际上已不存在的可选文件。 (默认值: False) |
 
-**返回值** 成功则返回"ok" ，失败则返回错误信息。
+**返回值** 成功则返回`"ok"` ，失败则返回错误信息。
 
 > **注意：**
 > 如果私钥在users.json中，就用"stored"作为privatekey的参数值。(例如 cloned sites)
 
-**例子:**
-```coffeescript
-if @site_info["privatekey"] # Private key stored in users.json
-	@cmd "siteSign", ["stored", "content.json"], (res) =>
-		@log "Sign result", res
-```
+
 
 
 ---
@@ -793,14 +667,7 @@ Force check and download changed content from other peers (only necessary if use
 
 **Return:** None
 
-**例子:**
-```coffeescript
-# Manual site update for passive connections
-updateSite: =>
-	$("#passive_error a").addClass("loading").removeClassLater("loading", 1000)
-	@log "Updating site..."
-	@cmd "siteUpdate", {"address": @site_info.address}
-```
+
 
 
 ---
@@ -824,7 +691,7 @@ Set user's site specific settings.
 |--------------|------------------------------------------------------|
 | **settings** | The user's site specific settings you want to store. |
 
-**Return:** ok on success
+**Return:** 若成功则返回`"ok"`
 
 
 ---
@@ -854,34 +721,33 @@ Initialize a new upload endpoint for a bigfile.
 
 > **注意：** Not supported non-ascii characters will be automatically removed from `inner_path` and `file_relative_path` values
 
-**例子**
+??? 例子
+    ```javascript tab=
+    var input = document.createElement('input')
+    document.body.appendChild(input)
+    input.type = "file"
+    input.style.visibility = "hidden"
 
-```javascript
-var input = document.createElement('input')
-document.body.appendChild(input)
-input.type = "file"
-input.style.visibility = "hidden"
+    input.onchange = () => {
+        var file = input.files[0]
+        page.cmd("bigfileUploadInit", ["optional/"+file.name, file.size], (init_res) => {
+            var formdata = new FormData()
+            formdata.append(file.name, file)
 
-input.onchange = () => {
-    var file = input.files[0]
-    page.cmd("bigfileUploadInit", ["optional/"+file.name, file.size], (init_res) => {
-        var formdata = new FormData()
-        formdata.append(file.name, file)
-
-        var req = new XMLHttpRequest()
-        req.upload.addEventListener("progress", console.log)
-        req.upload.addEventListener("loadend", () =>
-            page.cmd("wrapperConfirm", ["Upload finished!", "Open file"],
-                () => { window.top.location = init_res.inner_path }
+            var req = new XMLHttpRequest()
+            req.upload.addEventListener("progress", console.log)
+            req.upload.addEventListener("loadend", () =>
+                page.cmd("wrapperConfirm", ["Upload finished!", "Open file"],
+                    () => { window.top.location = init_res.inner_path }
+                )
             )
-        )
-        req.withCredentials = true
-        req.open("POST", init_res.url)
-        req.send(formdata)
-    })
-}
-input.click()
-```
+            req.withCredentials = true
+            req.open("POST", init_res.url)
+            req.send(formdata)
+        })
+    }
+    input.click()
+    ```
 
 
 ---
@@ -901,14 +767,14 @@ Get list of unique peers in client
 
 **返回值** List of unique peers
 
-**例子**:
-```javascript
-Page.cmd("chartGetPeerLocations")
-> [
->  {lat: 43.6655, city: "Toronto", ping: null, lon: -79.4204, country: "Canada"},
-> ...
-> ]
-```
+??? 例子
+    ```javascript tab=
+    Page.cmd("chartGetPeerLocations")
+    > [
+    >  {lat: 43.6655, city: "Toronto", ping: null, lon: -79.4204, country: "Canada"},
+    > ...
+    > ]
+    ```
 
 ---
 
@@ -924,7 +790,7 @@ Request Cross origin resource sharing permission with the given site.
 |-------------|-------------------------------------------|
 | **address** | The site address you want get cors access |
 
-**返回值** ok on success
+**返回值** 若成功则返回`"ok"`
 
 After the permission is granted the other site's files will be available under **/cors-siteaddress/** virtual directory via http request or by the fileGet API command.
 
@@ -1035,24 +901,9 @@ The SQL query should result in rows with cols:
 |-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **feeds** | Format: {"query name": [SQL query, [param1, param2, ...], ...}, parameters will be escaped, joined by `,` inserted in place of `:params` in the Sql query. |
 
-**返回值** ok
+**返回值** `"ok"`
 
-**例子:**
-```coffeescript
-# Follow ZeroBlog posts
-query = "
-	SELECT
-	 post_id AS event_uri,
-	 'post' AS type,
-	 date_published AS date_added,
-	 title AS title,
-	 body AS body,
-	 '?Post:' || post_id AS url
-	FROM post
-"
-params = [""]
-Page.cmd feedFollow [{"Posts": [query, params]}]
-```
+
 
 ---
 
@@ -1130,12 +981,9 @@ Add new user to mute list. (Requires confirmation for non-ADMIN sites)
 | **cert_user_id** | Cert user name of the user         |
 | **reason**       | Reason of the muting               |
 
-**返回值** ok if confirmed
+**返回值** `"ok"` if confirmed
 
-**例子:**
-```coffeescript
-Page.cmd("muteAdd", ['1GJUaZMjTfeETdYUhchSkDijv6LVhjekHz','helloworld@kaffie.bit','Spammer'])
-```
+
 
 ---
 
@@ -1147,12 +995,9 @@ Remove a user from mute list. (Requires confirmation for non-ADMIN sites)
 |------------------|------------------------------------|
 | **auth_address** | Directory name of the user's data. |
 
-**返回值** ok if confirmed
+**返回值** `"ok"` if confirmed
 
-**例子:**
-```coffeescript
-Page.cmd("muteRemove", '1GJUaZMjTfeETdYUhchSkDijv6LVhjekHz')
-```
+
 
 ---
 
@@ -1314,23 +1159,22 @@ Execute command in other site's context
 **返回值** Command's return value
 
 
-**例子**
+??? 例子
+    ```javascript
+    Page.cmd("as", ["138R53t3ZW7KDfSfxVpWUsMXgwUnsDNXLP", "siteSetLimit", 20], console.log )
+    ```
 
-```javascript
-Page.cmd("as", ["138R53t3ZW7KDfSfxVpWUsMXgwUnsDNXLP", "siteSetLimit", 20], console.log )
-```
-
-```javascript
-address = "138R53t3ZW7KDfSfxVpWUsMXgwUnsDNXLP"
-query = "SELECT * FROM json WHERE file_name = :file_name"
-params = {"file_name": "data.json"}
-Page.cmd("as", [address, "dbQuery", [query, params]], function(res) { console.log(res.length) } )
-```
+    ```javascript
+    address = "138R53t3ZW7KDfSfxVpWUsMXgwUnsDNXLP"
+    query = "SELECT * FROM json WHERE file_name = :file_name"
+    params = {"file_name": "data.json"}
+    Page.cmd("as", [address, "dbQuery", [query, params]], function(res) { console.log(res.length) } )
+    ```
 
 ---
 
 
-**返回值** ok
+**返回值** `"ok"`
 
 ### configSet
 
@@ -1343,7 +1187,7 @@ Create or update an entry in ZeroNet config file. (zeronet.conf by default)
 | **value** | Configuration entry new value |
 
 
-**返回值** ok
+**返回值** `"ok"`
 
 
 ---

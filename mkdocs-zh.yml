@@ -32,6 +32,11 @@ markdown_extensions:
     - toc:
           permalink: true
     - codehilite
+    - admonition
+    - pymdownx.superfences
+    - pymdownx.details
+    - pymdownx.mark
+    - pymdownx.critic
 
 plugins:
     - search:
